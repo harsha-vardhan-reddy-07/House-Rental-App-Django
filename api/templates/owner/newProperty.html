@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block styleLink %}
+    <link rel="stylesheet" href="/static/css/owner.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="user-home-page">
+
+    <div class="navbar-main">
+        <h3>SB Rentzz</h3>
+
+        <div class="navbar-options">
+            <a id="nav-owner-home" href="/owner-home/" >Home</a>
+            <a id="nav-owner-new-property" href="/new-property/" class="selected" >Add Property</a>
+            <a id="nav-owner-applications" href="/owner-applications/">Applications</a>
+        </div>
+        <button id="logoutBtn" >Logout</button>
+    </div>
+
+    <script>
+
+        const myLink = document.getElementById('logoutBtn');
+
+        myLink.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            localStorage.clear();
+            for (let key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    localStorage.removeItem(key);
+                }
+            }
+            window.location.href = '/';
+
+        });
+    </script>
+
+
+
+
+
+
+
+    <!-- New Property -->
+
+    <div class="user-home-container" >
+        <div class="user-home-header">
+            <h3>New Property Details</h3>
+            <h4>Username: <b id="nav-username" ></b> </h4>
+
+            <script>
+                const username = localStorage.getItem("username");
+                const navUsername = document.getElementById('nav-username');
+                navUsername.innerHTML = username;
+            </script>
+        </div>
+
+        <div class="user-home-body" >
+
+            <form class="update-owner-details" id="newPropertyForm"  method="post" >
+
+                    {% csrf_token %}
+
+                    {{ form.ownerId }}
+                    {{ form.ownerName }}
+
+                    <script>
+                        const ownerId = document.getElementById('formInputOwnerId');
+                        const ownerName = document.getElementById('formInputOwnerName');
+
+                        ownerId.value = localStorage.getItem('userId');
+                        ownerName.value = localStorage.getItem('username');
+                    </script>
+                    <span class="span-70-30">
+
+                        <div class="form-floating">
+                            {{ form.description }}
+                            <label for="floatingUpdatedescription">Description</label>
+                        </div>
+                        <div class="form-floating">
+                            {{ form.area}}
+                            <label for="floatingUpdatearea">Area (sq.ft)</label>
+                        </div>
+
+                    </span>
+
+                <span class="span-33-33-33">
+                        <div class="form-floating">
+                            {{ form.carouselImage1 }}
+                            <label for="floatingUpdatepropImg1">Property Image 1</label>
+                        </div>
+                        <div class="form-floating">
+                            {{ form.carouselImage2 }}
+                            <label for="floatingUpdatepropImg2">Property Image 2</label>
+                        </div>
+                        <div class="form-floating">
+                            {{ form.carouselImage3 }}
+                            <label for="floatingUpdatepropImg3">Property Image 3</label>
+                        </div>
+                    </span>
+
+                <span class="span-50-25-25">
+                        <div class="form-floating">
+                            {{ form.address }}
+                            <label for="floatingUpdateaddress">Address</label>
+                        </div>
+                        <div class="form-floating">
+                            {{ form.rent }}
+                            <label for="floatingUpdaterent">Rent (per month)</label>
+                        </div>
+                        <div class="form-floating">
+                            {{ form.deposit }}
+                            <label for="floatingUpdatedeposit">Deposit</label>
+                        </div>
+                    </span>
+
+                <span class="span-33-33-33">
+                        <div class="form-floating">
+                            {{ form.furnished }}
+                            <label for="floatingUpdateFurniture">Furniture</label>
+                        </div>
+                        <div class="form-floating">
+                            {{ form.availableFor}}
+                            <label for="floatingUpdateAvailablefor">Available For</label>
+                        </div>
+                        <div class="form-floating">
+                            {{ form.agreementDuration }}
+                            <label for="floatingUpdateagreement">Agreement (in months)</label>
+                        </div>
+                    </span>
+
+                
+                <p style="color:red; text-align: center" >{{ error }}</p>
+
+                <button  class="btn btn-primary" type="submit" >Add Property</button>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

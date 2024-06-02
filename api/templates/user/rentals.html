@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block styleLink %}
+    <link rel="stylesheet" href="/static/css/users.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="user-home-page">
+
+    <div class="navbar-main">
+        <h3>SB Rentzz <b><span id="nav-username" ></span></b></h3>
+
+        <div class="navbar-options">
+            <a id="nav-home" href="/user-home/" >Home</a>
+            <a id="nav-rentals" href="/user-rentals/" class="selected" >My Rentals</a>
+            <a id="nav-applications" href="/user-applications/">Rental Applications</a>
+        </div>
+        <button id="logoutBtn" >Logout</button>
+    </div>
+
+    <script>
+
+        const myLink = document.getElementById('logoutBtn');
+
+        myLink.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            localStorage.clear();
+            for (let key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    localStorage.removeItem(key);
+                }
+            }
+            window.location.href = '/';
+
+        });
+    </script>
+
+
+
+    <!-- My rentals -->
+
+    <div class="user-home-container" >
+
+        <div class="user-home-header">
+            <h3>My Rental Properties</h3>
+
+        </div>
+
+        <div class="user-home-body" >
+
+
+
+            <div class="property-list">
+
+                {% for property in rentals %}
+
+                    <form class="property" >
+
+                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="{{property.carouselImage1}}" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="{{property.carouselImage2}}" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="{{property.carouselImage3}}" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <h4  >{{property.description}}</h4>
+                        <span>
+                            <p><b>Rent: </b>&#8377; <span >{{property.rent}}</span>/-</p>
+                            <p><b>Deposit: </b>&#8377; <span >{{property.deposit}}</span>/-</p>
+                        </span>
+                        <p><b>Agreement Duration: </b><span >{{property.agreementDuration}}</span> mths</p>
+                        <p><b>Rent start date: </b><span >{{property.rentStartDate}}</span></p>
+                        <p><b>Address: </b><span >{{property.address}}</span></p>
+
+                        <a href="http://127.0.0.1:8000/vacate-rental/{{property.id}}" class="btn btn-danger primaryBtn propertyVacateBtn" type="submit" >Vacate</a>
+
+                        <!-- <h5>Vacated</h5> -->
+
+                    </form>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}

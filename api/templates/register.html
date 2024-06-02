@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block styleLink %}
+    <link rel="stylesheet" href="static/css/authenticate.css">
+{% endblock %}
+
+{% block content %}
+
+{% if isLogged %}
+    <script>
+        alert("You are already logged in successfully!!");
+        localStorage.setItem("isLogged", true);
+        localStorage.setItem("userId", "{{data.userId}}");
+        localStorage.setItem("username", "{{data.username}}");
+        localStorage.setItem("email", "{{data.email}}");
+        localStorage.setItem("usertype", "{{data.usertype}}");
+
+        if ("{{data.usertype}}" == "admin") {
+
+            window.location.href = "/admin-home";
+
+        } else if ("{{data.usertype}}" == "customer") {
+
+            window.location.href = "/user-home";
+
+        } else {
+
+            window.location.href = "/owner-home";
+
+        }
+        
+    </script>
+{% endif %}
+
+{% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+{% endif %}
+
+<div class="Authentication" id="joinNow">
+
+
+    <form id="registerForm" method="post" >
+        
+        {% csrf_token %}        
+
+        <h3>Register</h3>
+        <div class=" form-floating mb-3">
+            {{ form.username }}
+            <label for="exampleInputEmail1" class="form-label">Username</label>
+        </div>
+        <div class=" form-floating mb-3">
+            {{ form.email }}
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.password }}
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.usertype }}
+            <label for="exampleInputPassword1" class="form-label">Usertype</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary"  >Register</button>
+        <p>Already registered ? <a href="/login">Login now!!</a></p>
+    </form>
+
+</div>
+
+{% endblock %}

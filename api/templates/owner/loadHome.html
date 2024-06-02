@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block styleLink %}
+    <link rel="stylesheet" href="/static/css/owner.css">
+{% endblock %}
+
+{% block content %}
+
+    <script>
+
+        const user = localStorage.getItem('userId');
+
+        window.location.href = `/owner-home/${user}`;
+
+    </script>
+
+{% endblock %}
